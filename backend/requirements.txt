@@ -1,0 +1,51 @@
+# Declare what the application imports itself.
+#
+# Until now this file listed seven packages and the other eight arrived by
+# luck: ragas dragged in the langchain family, fastapi dragged in starlette and
+# httpx, markitdown dragged in beautifulsoup4. That works until it does not —
+# a ragas release that stops depending on langchain-openai would break
+# _build_llm at import time, on a run, with nothing in this file to explain it.
+#
+# The bounds matter most for ragas. The whole testset pipeline is written
+# against its 0.4 API, it drives the langchain versions underneath, and its
+# LangchainLLMWrapper — which the pipeline still needs, there is no native
+# replacement for the text-generation path — is marked for removal.
+
+# --- web
+fastapi>=0.115,<1
+uvicorn[standard]>=0.30,<1
+starlette>=0.46,<2
+pydantic>=2.0,<3
+pydantic-settings>=2.0,<3
+python-multipart>=0.0.9
+
+# --- storage
+SQLAlchemy>=2.0,<3
+
+# --- corpus conversion
+markitdown[pdf,docx,pptx,xlsx]>=0.1,<1
+beautifulsoup4>=4.12,<5
+
+# --- http / vectors
+httpx>=0.28,<1
+numpy>=2.0,<3
+
+# --- generation and evaluation
+ragas>=0.4.3,<0.5
+# Another one ragas pulls in unconstrained, and another failure it causes on a
+# fresh resolve: ragas/llms/base.py imports ChatVertexAI from
+# langchain_community.chat_models.vertexai at module level, and 0.4 dropped that
+# submodule. Whatever newer version a build happens to pick, `import ragas.llms`
+# dies — and ragas 0.4.3 is the last 0.4.x, so there is no release that fixes it
+# from that side. Nothing else here asks for 0.4.
+langchain-community>=0.3,<0.4
+# ragas only declares this under its "all" extra, but the plain install reaches
+# it anyway: OverlapScoreBuilder imports it in __post_init__, and
+# default_transforms — which is the testset generation path — builds one. Miss
+# it and generation dies on ImportError, in a stack that names rapidfuzz and
+# nothing else.
+rapidfuzz
+langchain-core>=1.0,<2
+langchain-openai>=1.0,<2
+langchain-anthropic>=1.0,<2
+langchain-classic>=1.0,<2

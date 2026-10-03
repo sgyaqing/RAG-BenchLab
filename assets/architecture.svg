@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 470" width="860" height="470" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <linearGradient id="brand" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5573ff"/><stop offset="1" stop-color="#2b40d8"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 10 5 0 10z" fill="#7b849b"/>
+    </marker>
+    <marker id="arrowBrand" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 10 5 0 10z" fill="#3b5bfd"/>
+    </marker>
+  </defs>
+
+  <rect x="0.75" y="0.75" width="858.5" height="468.5" rx="14" fill="#ffffff" stroke="#e3e6ef" stroke-width="1.5"/>
+
+  <!-- the customer's documents -->
+  <rect x="30" y="198" width="152" height="74" rx="11" fill="#ffffff" stroke="url(#brand)" stroke-width="2.5"/>
+  <text x="106" y="236" text-anchor="middle" font-size="21" font-weight="700" fill="#1d2939">Corpus</text>
+  <text x="106" y="257" text-anchor="middle" font-size="12.5" fill="#98a2b3">your documents</text>
+
+  <!-- RAG System -->
+  <rect x="258" y="26" width="564" height="182" rx="16" fill="#f8f9ff" stroke="#a9b6ff" stroke-width="2" stroke-dasharray="9 7"/>
+  <text x="288" y="60" font-size="19" font-weight="700" fill="#2b40d8">RAG System</text>
+  <rect x="300" y="100" width="132" height="66" rx="9" fill="#ffffff" stroke="#c3cbe0" stroke-width="1.6"/>
+  <text x="366" y="140" text-anchor="middle" font-size="18" font-weight="600" fill="#1d2939">Corpus</text>
+  <line x1="436" y1="133" x2="646" y2="133" stroke="#7b849b" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="650" y="100" width="132" height="66" rx="9" fill="#ffffff" stroke="#c3cbe0" stroke-width="1.6"/>
+  <text x="716" y="140" text-anchor="middle" font-size="18" font-weight="600" fill="#1d2939">chat</text>
+
+  <!-- RAG BenchLab -->
+  <rect x="258" y="250" width="564" height="182" rx="16" fill="#f8f9ff" stroke="#a9b6ff" stroke-width="2" stroke-dasharray="9 7"/>
+  <text x="288" y="284" font-size="19" font-weight="700" fill="#2b40d8">RAG BenchLab</text>
+  <rect x="300" y="324" width="132" height="66" rx="9" fill="#ffffff" stroke="#c3cbe0" stroke-width="1.6"/>
+  <text x="366" y="364" text-anchor="middle" font-size="18" font-weight="600" fill="#1d2939">Corpus</text>
+  <line x1="436" y1="357" x2="471" y2="357" stroke="#7b849b" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="475" y="324" width="132" height="66" rx="9" fill="#ffffff" stroke="#c3cbe0" stroke-width="1.6"/>
+  <text x="541" y="364" text-anchor="middle" font-size="18" font-weight="600" fill="#1d2939">Testset</text>
+  <line x1="611" y1="357" x2="646" y2="357" stroke="#7b849b" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="650" y="324" width="132" height="66" rx="9" fill="#ffffff" stroke="#c3cbe0" stroke-width="1.6"/>
+  <text x="716" y="364" text-anchor="middle" font-size="18" font-weight="600" fill="#1d2939">Test</text>
+
+  <!-- the testset is what drives the test -->
+  <path d="M716 166 L716 320" fill="none" stroke="#3b5bfd" stroke-width="2.4" stroke-dasharray="7 6" marker-end="url(#arrowBrand)"/>
+  <text x="728" y="234" font-size="13.5" fill="#3b5bfd">evaluates</text>
+
+  <!-- the same corpus feeds both -->
+  <path d="M182 214 L296 136" fill="none" stroke="#7b849b" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M182 256 L296 352" fill="none" stroke="#7b849b" stroke-width="2" marker-end="url(#arrow)"/>
+</svg>

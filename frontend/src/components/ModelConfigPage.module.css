@@ -1,0 +1,41 @@
+.page {
+  flex: 1;
+  padding: 24px 28px;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.actions {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Name-availability hint under the field, as in the corpus and adapter
+   dialogs: the icon carries the status color, the text stays neutral. */
+.nameHelp {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.nameHelpText {
+  color: rgba(0, 0, 0, 0.88);
+}
+
+/* Warning-toned note under a checkbox while it is off — same look as the judge
+   cache note in the test dialog. antd owns the spacing through the help slot. */
+.formNote {
+  color: #b54708;
+  font-size: 12px;
+}
+
+/* Fixed width so the loading spinner never resizes the button/input */
+.fetchBtn {
+  width: 88px;
+  flex-shrink: 0;
+}

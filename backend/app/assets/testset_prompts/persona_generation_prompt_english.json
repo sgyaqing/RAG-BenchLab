@@ -1,0 +1,18 @@
+{
+  "ragas_version": "0.4.3",
+  "derived_from": "ragas 0.4.3 (Apache License 2.0, https://github.com/vibrantlabsai/ragas) — modified",
+  "original_hash": null,
+  "language": "english",
+  "instruction": "Using the provided summary, generate a user identity who would likely interact with or benefit from the content — the kind of person who comes looking for this sort of document. Describe who they are.\n- name MUST be an identity label (an occupation, job title or user type, e.g. \"Digital Marketing Specialist\", \"Retail Investor\", \"Industry Analyst\"). Do NOT use a personal name (e.g. \"John Smith\", \"Alice\"): these questions are put to a retrieval system by a user, and nobody is addressed by name.\n- role_description is one sentence saying what this identity cares about and what they would ask about.\n- name and role_description must be in the same language as the provided summary.",
+  "examples": [
+    {
+      "input": {
+        "text": "Guide to Digital Marketing explains strategies for engaging audiences across various online platforms."
+      },
+      "output": {
+        "name": "Digital Marketing Specialist",
+        "role_description": "Focuses on engaging audiences and growing the brand online."
+      }
+    }
+  ]
+}

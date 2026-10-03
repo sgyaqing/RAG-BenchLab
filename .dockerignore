@@ -1,0 +1,36 @@
+# What 'docker build' tars up and sends to the daemon. Anything not excluded
+# here is at least uploaded on every build, and would be baked into the image
+# by any COPY that reached it — so this file is the outer of two gates. The
+# inner one is the Dockerfile copying only backend/ and the compiled bundle,
+# which holds even if a line below is missing.
+
+# --- runtime state: the reason this file exists ---------------------------
+# data/ holds the SQLite database — every API key the UI has ever stored —
+# alongside the corpus, testsets and evaluation artifacts. logs/ holds app.log
+# and the stall dumps. Neither may enter an image.
+data/
+logs/
+
+# Working notes from the frontend recovery, kept on disk but never published:
+# session transcripts that captured live API keys verbatim.
+recovery.md
+backup.md
+
+# --- not public
+design/
+
+# --- regenerated during the build (or before it)
+frontend/node_modules/
+frontend/dist/
+# The ** matters: a bare name matches only at the context root, so `__pycache__/`
+# alone would let backend/app/__pycache__ through. Measured the hard way — the
+# first version of this file used `.DS_Store` and `.pytest_cache/`, and both
+# reached a release image from backend/.
+**/__pycache__/
+**/.pytest_cache/
+
+# --- VCS / OS / editor
+.git/
+**/.DS_Store
+.idea/
+.vscode/

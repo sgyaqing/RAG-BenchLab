@@ -1,0 +1,89 @@
+/* Shared with ImportTestsetModal, which imports this stylesheet. The picker
+   block is an antd Dragger there and our own drop zone here; only the three
+   text/icon classes below are common to both. */
+
+/* A picker area's min-content is wider than the wrapper column, which makes
+   the flex row wrap (control drops to the next line). Let it shrink instead. */
+.form :global(.ant-form-item-control) {
+  min-width: 0;
+}
+
+.nameHelp {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Icon keeps the status color (green/red); text stays neutral. */
+.nameHelpText {
+  color: rgba(0, 0, 0, 0.88);
+}
+
+/* Consequence hint shown while a checkbox is off (the knowledge graph rebuild
+   note in the testset dialog). Passed as Form.Item `help`, so antd owns the
+   spacing — same rule as the judge cache note in CreateEvalModal.module.css. */
+.formNote {
+  color: #b54708;
+  font-size: 12px;
+}
+
+/* Keep the bar in sync with the counter during fast multi-file uploads —
+   antd's transition makes the bar visibly lag behind the count.
+
+   Both names are listed because the first attempt at this rule used only
+   `.ant-progress-bg` (antd 5's), and antd 6 renamed the filled part to
+   `.ant-progress-track`. A selector that matches nothing fails silently: the
+   transition stays on, the bar crawls behind a counter that has already
+   reached 791/791, and the CSS reads as though it were handled. */
+.uploadProgress :global(.ant-progress-track),
+.uploadProgress :global(.ant-progress-bg) {
+  transition: none !important;
+}
+
+/* The drop area is the drop target and nothing else — the two buttons inside
+   it are what opens a picker. Dashed border and the highlight on drag-over are
+   the whole affordance. */
+.dropZone {
+  width: 100%;
+  border: 1px dashed #d0d5dd;
+  border-radius: 8px;
+  background: #fafafa;
+  padding: 12px 16px 16px;
+  text-align: center;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.dropZoneActive {
+  border-color: #3b5bfd;
+  background: #f0f3ff;
+}
+
+.pickerIcon {
+  font-size: 40px;
+  color: #3b5bfd;
+  margin: 8px 0 0;
+}
+
+.pickerText {
+  font-size: 15px;
+  color: #1d2939;
+  margin: 8px 0 4px;
+}
+
+.pickerHint {
+  font-size: 12px;
+  color: #98a2b3;
+  margin: 0 0 8px;
+}
+
+.selected {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: #475467;
+}
+
+.error {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: #d92d20;
+}

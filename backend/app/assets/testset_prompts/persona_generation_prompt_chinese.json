@@ -1,0 +1,18 @@
+{
+  "ragas_version": "0.4.3",
+  "derived_from": "ragas 0.4.3 (Apache License 2.0, https://github.com/vibrantlabsai/ragas) — modified",
+  "original_hash": null,
+  "language": "chinese",
+  "instruction": "根据提供的摘要，生成一个可能与此内容互动或从中受益的用户身份——即什么人会来查阅这类文档。描述要说明这个人是谁。\n- name 必须是**身份标签**（职业、岗位或用户类型，如「数字营销专员」「散户投资者」「行业研究员」），**不要用具体人名**（如「张伟」「李四」）：生成的是用户向检索系统提出的问题，不会称呼某个人。\n- role_description 用一句话说明这个身份关心什么、会提出哪类问题。\n- name 和 role_description 必须与提供的摘要使用同一种语言：摘要为中文时必须用中文名称，不要使用英文人名或英文机构名。",
+  "examples": [
+    {
+      "input": {
+        "text": "《数字营销指南》讲解了如何在各类在线平台上吸引受众的策略。"
+      },
+      "output": {
+        "name": "数字营销专员",
+        "role_description": "专注于在线渠道的受众互动与品牌增长。"
+      }
+    }
+  ]
+}

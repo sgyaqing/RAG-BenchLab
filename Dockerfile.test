@@ -1,0 +1,36 @@
+# No `# syntax` directive — see the note in Dockerfile; it costs a pull from
+# Docker Hub that a registry mirror can refuse, and buys nothing here.
+
+# The runtime image plus its test suite.
+#
+#   docker build -t rag-benchlab:latest .
+#   docker build -f Dockerfile.test -t rag-benchlab:test .
+#   docker run --rm rag-benchlab:test
+#
+# Nothing here runs at request time, so the runtime image stays the product and
+# the suite stays a separate artifact that happens to share its filesystem.
+
+# Overridable so a non-default arch can be tested without displacing the tag
+# the arm64 build holds: --build-arg BASE=rag-benchlab:amd64
+ARG BASE=rag-benchlab:latest
+FROM ${BASE}
+
+# Root only for the install and the copies that follow; the suite itself runs
+# as rbl, the same user the app runs as, so a test that writes under data/ is
+# exercising the permissions the app will actually have.
+USER root
+
+ARG PIP_INDEX=https://pypi.org/simple
+RUN pip install --no-cache-dir --index-url "$PIP_INDEX" pytest
+
+COPY backend/tests /app/backend/tests
+COPY backend/pytest.ini /app/backend/pytest.ini
+
+# test_log_keys reads the locale sources themselves, to check that every log key
+# the backend emits has copy in both languages — dist/ holds only the compiled
+# bundle, so the .ts files are what the suite needs.
+COPY frontend/src/i18n/locales /app/frontend/src/i18n/locales
+
+USER rbl
+
+CMD ["python", "-m", "pytest", "-q"]

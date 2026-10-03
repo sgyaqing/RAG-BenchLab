@@ -1,0 +1,36 @@
+{
+  "ragas_version": "0.4.3",
+  "derived_from": "ragas 0.4.3 (Apache License 2.0, https://github.com/vibrantlabsai/ragas) — modified",
+  "original_hash": 2083991260395332624,
+  "language": "chinese",
+  "instruction": "通过将至少两个不同列表中的概念配对来形成组合。\n**说明：**\n- 查看每个节点中的概念。\n- 识别可以在逻辑上关联或对比的概念。\n- 形成涉及不同节点中概念的组合。\n- 每个组合应包含来自两个或更多节点的至少一个概念。\n- 清晰简洁地列出组合。\n- 同一组合不要重复超过一次。",
+  "examples": [
+    {
+      "input": {
+        "lists_of_concepts": [
+          [
+            "人工智能",
+            "自动化"
+          ],
+          [
+            "医疗保健",
+            "数据隐私"
+          ]
+        ],
+        "max_combinations": 2
+      },
+      "output": {
+        "combinations": [
+          [
+            "人工智能",
+            "医疗保健"
+          ],
+          [
+            "自动化",
+            "数据隐私"
+          ]
+        ]
+      }
+    }
+  ]
+}

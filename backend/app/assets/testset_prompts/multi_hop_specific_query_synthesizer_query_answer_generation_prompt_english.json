@@ -1,0 +1,32 @@
+{
+  "ragas_version": "0.4.3",
+  "derived_from": "ragas 0.4.3 (Apache License 2.0, https://github.com/vibrantlabsai/ragas) — modified",
+  "original_hash": null,
+  "language": "english",
+  "instruction": "Generate a multi-hop query and answer based on the specified conditions (persona, themes, style, length) and the provided context. The themes represent a set of phrases either extracted or generated from the context, which highlight the suitability of the selected context for multi-hop query creation. Ensure the query explicitly incorporates these themes.### Instructions:\n1. **Generate a Multi-Hop Query**: Use the provided context segments and themes to form a query that requires combining information from multiple segments (e.g., `<1-hop>` and `<2-hop>`). Ensure the query explicitly incorporates one or more themes and reflects their relevance to the context. The query must name every object it refers to so it is unambiguous within the corpus:\n   - Spell each one out — do not say \"this meeting\", \"the company\" or \"the document\"; name which meeting, which company, which document (e.g. Alpha Corp's 2018 annual meeting);\n   - Do not date a file to refer to it (e.g. \"the 2016 X report\"): one report can span several years, so refer to it by title or number instead;\n   - Every year, date and name in the question must match the source material: never misstate the material's year, never have one year's event decide another period's business, and never combine content from different years or events.\n   - Phrase it as the single query a user would type into a search system: do not address anyone by name (\"Alice, ...\", \"Mr X\"), do not narrate a particular person's plans or actions (\"he holds ... and plans to attend ...\"), and never chain several questions into one.\n2. **Generate an Answer**: Answer what the query asks in one complete sentence — never a bare word, number or phrase; the answer must be understandable on its own. Do not list other facts, figures or details from the context that the question does not ask about. Do not list other facts, figures or details from the context that the question does not ask about; if the query asks for a single piece of information, give only that piece instead of expanding it into a summary. The answer must come entirely from the provided context; do not add information that cannot be inferred from it.\n3. **Multi-Hop Context Tags**:\n   - Each context segment is tagged as `<1-hop>`, `<2-hop>`, etc.\n   - Ensure the query uses information from at least two segments and connects them meaningfully.\n4. **Additional Context** (if provided): If llm_context is provided, use it as guidance for what type of question to generate (e.g., comparison questions, cause-effect questions, application-based questions) and how to structure the answer accordingly. Still ensure the content comes only from the provided context.",
+  "examples": [
+    {
+      "input": {
+        "persona": {
+          "name": "Historian",
+          "role_description": "Focuses on major scientific milestones and their global impact."
+        },
+        "themes": [
+          "Theory of Relativity",
+          "Experimental Validation"
+        ],
+        "query_style": "Formal",
+        "query_length": "Medium",
+        "context": [
+          "<1-hop> Albert Einstein developed the theory of relativity, introducing the concept of spacetime.",
+          "<2-hop> The bending of light by gravity was confirmed during the 1919 solar eclipse, supporting Einstein’s theory."
+        ],
+        "llm_context": null
+      },
+      "output": {
+        "query": "How was the experimental validation of the theory of relativity achieved during the 1919 solar eclipse?",
+        "answer": "The experimental validation of the theory of relativity was achieved during the 1919 solar eclipse by confirming the bending of light by gravity, which supported Einstein’s concept of spacetime as proposed in the theory."
+      }
+    }
+  ]
+}

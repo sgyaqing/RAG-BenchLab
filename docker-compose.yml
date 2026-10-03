@@ -1,0 +1,42 @@
+# RAG-BenchLab, packaged. Build with:
+#
+#     docker compose up -d --build
+#
+# The UI is then on http://localhost:6742 — the backend serves the compiled
+# SPA itself, so there is no second container and no reverse proxy to set up.
+#
+# NOTE ON EXPOSURE: this build has no authentication. Anyone who can reach the
+# port can read every API key the UI has stored, and can spend them. Keep it on
+# a private network, or put it behind a proxy that authenticates. Do not publish
+# 6742 straight to the internet.
+
+services:
+  rag-benchlab:
+    build:
+      context: .
+      # A slow network can pass a mirror instead:
+      #   args:
+      #     PIP_INDEX: https://mirrors.aliyun.com/pypi/simple/
+      #     NPM_REGISTRY: https://registry.npmmirror.com
+    image: rag-benchlab:latest
+    ports:
+      - "6742:6742"
+    extra_hosts:
+      # Linux needs this for host.docker.internal to resolve; Docker Desktop on
+      # Mac and Windows answers to the name already. It is the far end of the
+      # translation the image declares (RBL_HOST_GATEWAY) — the customer types
+      # localhost for their own RAG system, and this is where that goes.
+      - "host.docker.internal:host-gateway"
+    volumes:
+      # Named volumes, not bind mounts: SQLite takes real POSIX locks, and a
+      # bind mount from a network or non-POSIX filesystem is where those quietly
+      # stop working. data/ holds the database, the corpus, the testsets and the
+      # evaluation artifacts; logs/ is kept so a crash is still inspectable after
+      # the container is replaced.
+      - rbl-data:/app/data
+      - rbl-logs:/app/logs
+    restart: unless-stopped
+
+volumes:
+  rbl-data:
+  rbl-logs:

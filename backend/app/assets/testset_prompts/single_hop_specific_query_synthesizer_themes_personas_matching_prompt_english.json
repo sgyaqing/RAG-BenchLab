@@ -1,0 +1,40 @@
+{
+  "ragas_version": "0.4.3",
+  "derived_from": "ragas 0.4.3 (Apache License 2.0, https://github.com/vibrantlabsai/ragas) — unmodified",
+  "original_hash": 738088306820394389,
+  "language": "english",
+  "instruction": "Given a list of themes and personas with their roles, associate each persona with relevant themes based on their role description.",
+  "examples": [
+    {
+      "input": {
+        "themes": [
+          "Empathy",
+          "Inclusivity",
+          "Remote work"
+        ],
+        "personas": [
+          {
+            "name": "HR Manager",
+            "role_description": "Focuses on inclusivity and employee support."
+          },
+          {
+            "name": "Remote Team Lead",
+            "role_description": "Manages remote team communication."
+          }
+        ]
+      },
+      "output": {
+        "mapping": {
+          "HR Manager": [
+            "Inclusivity",
+            "Empathy"
+          ],
+          "Remote Team Lead": [
+            "Remote work",
+            "Empathy"
+          ]
+        }
+      }
+    }
+  ]
+}

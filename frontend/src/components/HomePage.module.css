@@ -1,0 +1,49 @@
+.home {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 40px 24px;
+  text-align: center;
+}
+
+.title {
+  font-size: 56px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #1d2939;
+  margin: 0;
+}
+
+.tagline {
+  font-size: 20px;
+  color: #667085;
+  margin: 0 0 24px;
+}
+
+.entries {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.entryBtn {
+  min-width: 240px;
+  padding: 20px 36px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+  background: #3b5bfd;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.entryBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(59, 91, 253, 0.35);
+}

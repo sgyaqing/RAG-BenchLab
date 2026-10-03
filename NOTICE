@@ -1,0 +1,25 @@
+RAG-BenchLab
+Copyright 2026 Dalian Qinteng Technology Co., Ltd.
+
+This product includes material derived from ragas (https://github.com/vibrantlabsai/ragas),
+version 0.4.3, which is distributed under the Apache License, Version 2.0. ragas
+ships no NOTICE file of its own; this file records what was taken from it, and
+what was changed.
+
+  backend/app/assets/testset_prompts/*.json
+
+      The prompt instructions and examples in these files come from ragas'
+      test-set generation prompts:
+
+        ragas/testset/persona.py
+        ragas/testset/synthesizers/prompts.py
+        ragas/testset/synthesizers/multi_hop/prompts.py
+        ragas/testset/synthesizers/single_hop/prompts.py
+
+      Twelve of the sixteen files were modified — eight translated into Chinese
+      and four rewritten in English — and four are unchanged. Each file records
+      its own provenance in a `derived_from` field.
+
+ragas is also used here as a library, as are the other third-party dependencies
+listed in backend/requirements.txt and frontend/package.json. Those remain under
+their own licenses.

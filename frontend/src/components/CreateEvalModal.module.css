@@ -1,0 +1,16 @@
+.nameHelp {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.nameHelpText {
+  color: #667085;
+}
+
+/* Warning-toned note text, passed as Form.Item `help` so antd owns the
+   spacing and lines it up with the control column in every locale. */
+.formNote {
+  color: #b54708;
+  font-size: 12px;
+}

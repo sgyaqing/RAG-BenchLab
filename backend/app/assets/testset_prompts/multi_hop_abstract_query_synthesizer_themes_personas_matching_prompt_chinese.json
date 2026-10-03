@@ -1,0 +1,40 @@
+{
+  "ragas_version": "0.4.3",
+  "derived_from": "ragas 0.4.3 (Apache License 2.0, https://github.com/vibrantlabsai/ragas) — modified",
+  "original_hash": null,
+  "language": "chinese",
+  "instruction": "给定一个带有角色的主题和人物列表，根据每个角色的角色描述将其与相关主题关联起来。",
+  "examples": [
+    {
+      "input": {
+        "themes": [
+          "共情",
+          "包容性",
+          "远程工作"
+        ],
+        "personas": [
+          {
+            "name": "人力资源经理",
+            "role_description": "专注于包容性和员工支持。"
+          },
+          {
+            "name": "远程团队主管",
+            "role_description": "管理远程团队沟通。"
+          }
+        ]
+      },
+      "output": {
+        "mapping": {
+          "人力资源经理": [
+            "包容性",
+            "共情"
+          ],
+          "远程团队主管": [
+            "远程工作",
+            "共情"
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "ragas_version": "0.4.3",
+  "derived_from": "ragas 0.4.3 (Apache License 2.0, https://github.com/vibrantlabsai/ragas) — unmodified",
+  "original_hash": 2055207522766300852,
+  "language": "english",
+  "instruction": "Form combinations by pairing concepts from at least two different lists.\n**Instructions:**\n- Review the concepts from each node.\n- Identify concepts that can logically be connected or contrasted.\n- Form combinations that involve concepts from different nodes.\n- Each combination should include at least one concept from two or more nodes.\n- List the combinations clearly and concisely.\n- Do not repeat the same combination more than once.",
+  "examples": [
+    {
+      "input": {
+        "lists_of_concepts": [
+          [
+            "Artificial intelligence",
+            "Automation"
+          ],
+          [
+            "Healthcare",
+            "Data privacy"
+          ]
+        ],
+        "max_combinations": 2
+      },
+      "output": {
+        "combinations": [
+          [
+            "Artificial intelligence",
+            "Healthcare"
+          ],
+          [
+            "Automation",
+            "Data privacy"
+          ]
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+.page {
+  flex: 1;
+  padding: 24px 28px;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.progressCell {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: 220px;
+}
+
+.progressCell :global(.ant-progress) {
+  flex: 1;
+}
+
+.progressText {
+  color: #475467;
+  font-variant-numeric: tabular-nums;
+}
+
+.progressWrap {
+  display: inline-flex;
+  flex-direction: column;
+  width: 240px;
+}
+
+.stageText {
+  font-size: 12px;
+  color: #98a2b3;
+}
+
+.logBox {
+  max-height: 320px;
+  overflow-y: auto;
+  background: #f8fafc;
+  border: 1px solid #eaecf0;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 13px;
+  color: #475467;
+}
+
+.logFailedTitle {
+  font-weight: 600;
+  color: #b42318;
+  margin: 0 0 4px;
+}
+
+.logLine {
+  margin: 0 0 2px;
+  word-break: break-all;
+}
+
+.logSummary {
+  margin: 12px 0 0;
+  padding-top: 8px;
+  border-top: 1px dashed #d0d5dd;
+  color: #1d2939;
+}
+
+.logCompletedAt {
+  margin: 4px 0 0;
+  color: #1d2939;
+}
+
+/* The "no contexts path" mark beside an adapter name. Muted on purpose: a
+   system that returns no retrieved chunks is a valid one, so this reads as a
+   note about the adapter rather than a fault. */
+.nameMark {
+  margin-left: 6px;
+  color: #98a2b3;
+  cursor: help;
+}

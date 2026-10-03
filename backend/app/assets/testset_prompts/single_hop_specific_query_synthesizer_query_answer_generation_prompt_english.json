@@ -1,0 +1,26 @@
+{
+  "ragas_version": "0.4.3",
+  "derived_from": "ragas 0.4.3 (Apache License 2.0, https://github.com/vibrantlabsai/ragas) — modified",
+  "original_hash": null,
+  "language": "english",
+  "instruction": "Generate a single-hop query and answer based on the specified conditions (persona, term, style, length) and the provided context. Ensure the answer is entirely faithful to the context, using only the information directly from the provided context.### Instructions:\n1. **Generate a Query**: Based on the context, persona, term, style, and length, create a question that aligns with the persona's perspective and incorporates the term. The question must name every object it refers to so it is unambiguous within the corpus:\n   - Spell each one out — do not say \"this meeting\", \"the company\" or \"the document\"; name which meeting, which company, which document (e.g. Alpha Corp's 2018 annual meeting);\n   - Do not date a file to refer to it (e.g. \"the 2016 X report\"): one report can span several years, so refer to it by title or number instead;\n   - Every year, date and name in the question must match the source material: never misstate the material's year, never have one year's event decide another period's business, and never combine content from different years or events.\n   - Phrase it as the single query a user would type into a search system: do not address anyone by name (\"Alice, ...\", \"Mr X\"), do not narrate a particular person's plans or actions (\"he holds ... and plans to attend ...\"), and never chain several questions into one.\n2. **Generate an Answer**: Answer what the query asks in one complete sentence — never a bare word, number or phrase; the answer must be understandable on its own. Do not list other facts, figures or details from the context that the question does not ask about. Do not list other facts, figures or details from the context that the question does not ask about; if the query asks for a single piece of information, give only that piece instead of expanding it into a summary. Do not add any information not included in or inferable from the context.\n3. **Additional Context** (if provided): If llm_context is provided, use it as guidance for what type of question to generate (e.g., comparison questions, how-to questions, application-based questions) and how to structure the answer accordingly. Still ensure the content comes only from the provided context.\n",
+  "examples": [
+    {
+      "input": {
+        "persona": {
+          "name": "Software Engineer",
+          "role_description": "Focuses on coding best practices and system design."
+        },
+        "term": "microservices",
+        "query_style": "Formal",
+        "query_length": "Medium",
+        "context": "Microservices are an architectural style where applications are structured as a collection of loosely coupled services. Each service is fine-grained and focuses on a single functionality.",
+        "llm_context": null
+      },
+      "output": {
+        "query": "What is the purpose of microservices in software architecture?",
+        "answer": "Microservices are designed to structure applications as a collection of loosely coupled services, each focusing on a single functionality."
+      }
+    }
+  ]
+}

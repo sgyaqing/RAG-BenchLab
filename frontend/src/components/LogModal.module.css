@@ -1,0 +1,16 @@
+.logBox {
+  max-height: 320px;
+  overflow-y: auto;
+  background: #f8fafc;
+  border: 1px solid #eaecf0;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 13px;
+  color: #475467;
+}
+
+.logLine {
+  margin: 0 0 2px;
+  word-break: break-all;
+}
+

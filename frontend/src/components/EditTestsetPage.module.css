@@ -1,0 +1,86 @@
+.editPage {
+  flex: 1;
+  padding: 24px 28px;
+}
+
+.pageHeader {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.pageHeader .pageTitle {
+  margin: 0;
+}
+
+.pageTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1d2939;
+  margin: 0 0 16px;
+}
+
+.editedTag {
+  margin-left: 6px;
+  flex-shrink: 0;
+}
+
+.contextCard {
+  background: #f8fafc;
+  border: 1px solid #eaecf0;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+}
+
+.contextCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  font-size: 12px;
+  color: #667085;
+}
+
+.contextCardBody {
+  max-height: 160px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 13px;
+  color: #344054;
+  margin: 0;
+}
+
+.contextCell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.contextPreview {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.contextBadge {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: #98a2b3;
+  background: #f2f4f7;
+  border-radius: 4px;
+  padding: 1px 6px;
+}
+
+.softWarning {
+  color: #b54708;
+  font-size: 12px;
+  margin: 4px 0 0;
+}
