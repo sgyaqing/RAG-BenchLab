@@ -1484,12 +1484,23 @@ def _build_llm(config: ModelConfig, max_tokens: int, cache_dir: Path | None,
     common: dict = {
         "api_key": config.api_key or "none",
         "max_tokens": max_tokens,
-        # One retry, not three: this layer is the only one that retries a network
-        # failure (ragas' RunConfig is set to a single attempt), and a retry only
-        # ever helps a blip. The timeout is a first-byte timeout, so a request
-        # that needs 25 s to answer at all is not a blip and three attempts of it
-        # bought nothing but 44 s.
-        "max_retries": 1,
+        # Three retries, and this layer is still the only one that retries a
+        # network failure (ragas' RunConfig is set to a single attempt). The
+        # count buys recovery from a short outage, measured the hard way: eight
+        # concurrent calls hit one ~10 s silent window together, the endpoint
+        # was answering again 3 s after the first failure, and with a single
+        # retry both attempts fell inside the same dead window — one escaped
+        # ReadTimeout killed a whole generation run. The SDK's backoff
+        # (exponential, jittered) walks later attempts past a blip like that.
+        # What the count does not buy is patience: the timeout below is a
+        # first-byte timeout, so an endpoint that never starts answering still
+        # costs its 10 s per attempt, ~40 s before this gives up on it — the
+        # old "one retry" kept that at ~20 s, and that trade is what changed
+        # here, not the timeout. Billing and auth errors are unaffected either
+        # way: the SDK never retries 401/402/403-class responses (its
+        # _should_retry covers 408/409/429/5xx and connection errors only), so
+        # a dead account still fails on the first attempt.
+        "max_retries": 3,
         "timeout": LLM_TIMEOUT,
         # Stream, so that "first byte" means the model started answering rather
         # than that it finished. Unstreamed, the server buffers the whole reply
