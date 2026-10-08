@@ -104,6 +104,7 @@ async def chat_completion(
     max_tokens: int,
     system: str | None = None,
     extra: dict | None = None,
+    timeout: httpx.Timeout | None = None,
     close_connection: bool = False,
 ) -> ChatReply:
     """POST one chat completion. Transport errors raise; an HTTP status does not.
@@ -111,7 +112,10 @@ async def chat_completion(
     `messages` is the conversation without the system turn — pass the system
     prompt as `system`, because the two protocols carry it differently: OpenAI
     as a leading message, Anthropic as a top-level parameter. `extra` adds body
-    fields (a thinking setting, a probe candidate).
+    fields (a thinking setting, a probe candidate). `timeout` overrides the
+    client's timeouts for this one request, and is left out when unset:
+    httpx reads a passed `None` as "no timeouts at all", not as "the client's
+    timeouts" — the request-level argument replaces the client's wholesale.
     """
     if api_format == "anthropic":
         url = _anthropic_url(base_url, "messages")
@@ -129,5 +133,8 @@ async def chat_completion(
         payload.update(extra)
     if close_connection:
         headers["Connection"] = "close"
-    response = await client.post(url, headers=headers, json=payload)
+    if timeout is not None:
+        response = await client.post(url, headers=headers, json=payload, timeout=timeout)
+    else:
+        response = await client.post(url, headers=headers, json=payload)
     return ChatReply(response=response, api_format=api_format)

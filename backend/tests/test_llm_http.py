@@ -8,6 +8,7 @@ credential.
 """
 
 import asyncio
+import itertools
 from types import SimpleNamespace
 
 import httpx
@@ -31,7 +32,7 @@ class Recorder:
     async def __aexit__(self, *args):
         return False
 
-    async def post(self, url, headers=None, json=None):
+    async def post(self, url, headers=None, json=None, timeout=None):
         self.sent = {"url": url, "headers": headers or {}, "json": json or {}}
         return httpx.Response(
             200,
@@ -207,3 +208,149 @@ def test_the_adapter_calls_the_model_the_way_its_config_says(recorder):
     cfg.thinking_param = None
     asyncio.run(adapter_assist._ask_llm(cfg, "SYS", "USER"))
     assert "thinking" not in recorder.sent["json"]
+
+
+class FlakyClient:
+    """An AsyncClient whose calls walk a scripted list of outcomes — an
+    Exception entry is raised, anything else is returned — counting the
+    attempts and the per-attempt timeout each one was handed."""
+
+    def __init__(self, outcomes):
+        self._outcomes = list(outcomes)
+        self.calls = 0
+        self.timeouts = []
+
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, *args):
+        return False
+
+    async def _next(self, outcome, timeout):
+        self.calls += 1
+        self.timeouts.append(timeout)
+        if isinstance(outcome, Exception):
+            raise outcome
+        return outcome
+
+    async def post(self, url, headers=None, json=None, timeout=None):
+        return await self._next(self._outcomes[self.calls], timeout)
+
+    async def get(self, url, headers=None, timeout=None):
+        return await self._next(self._outcomes[self.calls], timeout)
+
+
+def _chat(status=200, body=None):
+    url = "https://api.deepseek.com/chat/completions"
+    return httpx.Response(
+        status, request=httpx.Request("POST", url),
+        json=body if body is not None else {"choices": [{"message": {"content": "ok"}}]},
+    )
+
+
+@pytest.fixture()
+def no_backoff(monkeypatch) -> list[float]:
+    """Record the retry backoffs instead of sleeping them out."""
+    sleeps: list[float] = []
+
+    async def record(seconds: float) -> None:
+        sleeps.append(seconds)
+
+    monkeypatch.setattr(model_connect.asyncio, "sleep", record)
+    return sleeps
+
+
+def _flaky(monkeypatch, outcomes) -> FlakyClient:
+    fake = FlakyClient(outcomes)
+    monkeypatch.setattr(httpx, "AsyncClient", lambda *a, **kw: fake)
+    return fake
+
+
+def test_a_silent_window_is_walked_past_by_the_retry(monkeypatch, cfg, no_backoff):
+    """The config page's morning: the endpoint sits silent past the timeout
+    once, then answers. The retry carries the save instead of failing it."""
+    fake = _flaky(monkeypatch, [httpx.ReadTimeout("timed out"), _chat()])
+    ok, message, ms = asyncio.run(
+        model_connect.test_connectivity("llm", "openai", cfg.base_url, cfg.api_key, cfg.model)
+    )
+    assert (ok, fake.calls, len(no_backoff)) == (True, 2, 1)
+    assert ms is not None
+
+
+def test_a_window_that_never_lifts_still_names_the_exception(monkeypatch, cfg, no_backoff):
+    fake = _flaky(monkeypatch, [httpx.ReadTimeout("timed out")] * 4)
+    ok, message, ms = asyncio.run(
+        model_connect.test_connectivity("llm", "openai", cfg.base_url, cfg.api_key, cfg.model)
+    )
+    assert (ok, ms) == (False, None)
+    assert fake.calls == model_connect.MAX_RETRIES + 1
+    assert len(no_backoff) == model_connect.MAX_RETRIES
+    assert "ReadTimeout" in message
+
+
+def test_an_auth_failure_is_not_retried(monkeypatch, cfg, no_backoff):
+    """A rejected key must fail on the first attempt — retrying it buys a
+    minute of spinner and never a different answer."""
+    fake = _flaky(monkeypatch, [_chat(401, {"error": "bad key"})])
+    ok, message, _ = asyncio.run(
+        model_connect.test_connectivity("llm", "openai", cfg.base_url, cfg.api_key, cfg.model)
+    )
+    assert (ok, fake.calls, no_backoff) == (False, 1, [])
+    assert message.startswith("HTTP 401")
+
+
+def test_a_busy_answer_is_retried_like_a_silent_one(monkeypatch, cfg, no_backoff):
+    fake = _flaky(monkeypatch, [_chat(503, {"error": "overloaded"}), _chat()])
+    ok, _, _ = asyncio.run(
+        model_connect.test_connectivity("llm", "openai", cfg.base_url, cfg.api_key, cfg.model)
+    )
+    assert (ok, fake.calls) == (True, 2)
+
+
+def test_the_embedding_ping_retries_the_same_way(monkeypatch, cfg, no_backoff):
+    url = "https://api.deepseek.com/embeddings"
+    fake = _flaky(monkeypatch, [
+        httpx.Response(503, request=httpx.Request("POST", url), json={}),
+        httpx.Response(200, request=httpx.Request("POST", url), json={}),
+    ])
+    ok, _, _ = asyncio.run(
+        model_connect.test_connectivity(
+            "embedding", "openai", cfg.base_url, cfg.api_key, cfg.model
+        )
+    )
+    assert (ok, fake.calls) == (True, 2)
+
+
+def test_the_model_list_retries_the_same_way(monkeypatch, cfg, no_backoff):
+    url = "https://api.deepseek.com/models"
+    fake = _flaky(monkeypatch, [
+        httpx.ConnectError("refused"),
+        httpx.Response(
+            200, request=httpx.Request("GET", url), json={"data": [{"id": "deepseek-flash"}]},
+        ),
+    ])
+    models = asyncio.run(model_connect.list_models("openai", cfg.base_url, cfg.api_key))
+    assert (models, fake.calls) == (["deepseek-flash"], 2)
+
+
+def test_the_sweep_is_bounded_by_a_total_deadline(monkeypatch, cfg, no_backoff):
+    """Retries must not turn a dead endpoint into a minute of spinner: each
+    attempt after the first gets only the budget the deadline has left, and
+    one with nothing left still fires, so the caller hears a real exception
+    rather than a fabricated one."""
+    clock = itertools.count(step=8)
+    monkeypatch.setattr(model_connect, "_now", lambda: next(clock))
+    fake = _flaky(monkeypatch, [httpx.ReadTimeout("timed out")] * 4)
+    ok, message, _ = asyncio.run(
+        model_connect.test_connectivity("llm", "openai", cfg.base_url, cfg.api_key, cfg.model)
+    )
+    assert ok is False
+    assert "ReadTimeout" in message
+    # The deadline is set at t=0; the four attempts then read 22, 14, 6 and
+    # -2 seconds off the clock — capped at the ordinary 15 s read / 10 s
+    # connect, floored so the spent attempt still makes a real call.
+    assert [(t.read, t.connect) for t in fake.timeouts] == [
+        (15.0, 10.0), (14.0, 10.0), (6.0, 6.0), (0.05, 0.05),
+    ]
+    # The attempt whose budget was already gone skipped its backoff wait.
+    assert len(no_backoff) == 3

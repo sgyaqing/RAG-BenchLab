@@ -23,6 +23,8 @@
 **智能、全面的 RAG 系统适配**
 智能对接各种 RAG 系统。
 
+![产品界面](assets/screenshot-zh.png)
+
 ## 使用方法
 
 启动后浏览器打开 <http://localhost:6742>，按顺序走五步：
@@ -71,8 +73,8 @@
 ### Docker（macOS / Windows / Linux 通用）
 
 ```bash
-IMAGE=sgyaqing/rag-benchlab:0.1.0
-#IMAGE=registry.cn-hangzhou.aliyuncs.com/sgyaqing/rag-benchlab:0.1.0
+IMAGE=sgyaqing/rag-benchlab:0.1.1
+#IMAGE=registry.cn-hangzhou.aliyuncs.com/sgyaqing/rag-benchlab:0.1.1
 
 docker run -d --name rag-benchlab \
   -p 6742:6742 \
@@ -87,12 +89,12 @@ docker run -d --name rag-benchlab \
 > `--add-host=host.docker.internal:host-gateway`
 > （macOS 和 Windows 的 Docker Desktop 已经支持，不用加。）
 
-> ⚠️ **本工具当前 v0.1.0 版本没有登录鉴权。** 任何能访问到这个系统的人，都能看到你存在里面的 API Key。请只在内网使用，或放在需要鉴权的反向代理之后，**不要直接暴露到公网。**
+> ⚠️ **本工具当前 v0.1.1 版本没有登录鉴权。** 任何能访问到这个系统的人，都能看到你存在里面的 API Key。请只在内网使用，或放在需要鉴权的反向代理之后，**不要直接暴露到公网。**
 
 ### macOS（推荐）
 
 **方式一：绿色版**
-从 [Releases](https://github.com/sgyaqing/RAG-BenchLab/releases) 下载 `RAG-BenchLab-0.1.0-macos-arm64.zip`，解压后双击「start.command」。自带 Python 和全部依赖，不需要预先安装任何环境。
+从 [Releases](https://github.com/sgyaqing/RAG-BenchLab/releases) 下载 `RAG-BenchLab-0.1.1-macos-arm64.zip`，解压后双击「start.command」。自带 Python 和全部依赖，不需要预先安装任何环境。
 
 > **所有运行方式中，最推荐在 macOS 上用绿色版**：包里的 NumPy 直接调用 Apple 为 macOS 优化的数学库，向量计算快得多，而在 Docker、Windows 下无法使用这层优化。**建测试集和评测的提速很明显。**
 
@@ -102,7 +104,7 @@ docker run -d --name rag-benchlab \
 ### Windows
 
 **方式一：绿色版**
-从 [Releases](https://github.com/sgyaqing/RAG-BenchLab/releases) 下载 `RAG-BenchLab-0.1.0-windows-x64.zip`，解压后双击「start.bat」。自带 Python，不需要预先安装任何环境。
+从 [Releases](https://github.com/sgyaqing/RAG-BenchLab/releases) 下载 `RAG-BenchLab-0.1.1-windows-x64.zip`，解压后双击「start.bat」。自带 Python，不需要预先安装任何环境。
 
 **方式二：Docker**
 见上面的 Docker 一节。

@@ -23,6 +23,8 @@ Five industry-recognized RAG metrics built in. Results are cached, so repeated r
 **Smart, broad RAG system support**
 Connects to a wide range of RAG systems.
 
+![Product UI in English](assets/screenshot-en.png)
+
 ## Usage
 
 Open <http://localhost:6742> in a browser and go through five steps:
@@ -71,8 +73,8 @@ Compares the system's answer with the reference answer: a combined score of **fa
 ### Docker (macOS / Windows / Linux)
 
 ```bash
-IMAGE=sgyaqing/rag-benchlab:0.1.0
-#IMAGE=registry.cn-hangzhou.aliyuncs.com/sgyaqing/rag-benchlab:0.1.0
+IMAGE=sgyaqing/rag-benchlab:0.1.1
+#IMAGE=registry.cn-hangzhou.aliyuncs.com/sgyaqing/rag-benchlab:0.1.1
 
 docker run -d --name rag-benchlab \
   -p 6742:6742 \
@@ -87,12 +89,12 @@ Open <http://localhost:6742>. To stop it: `docker stop rag-benchlab`.
 > `--add-host=host.docker.internal:host-gateway`
 > (Docker Desktop on macOS and Windows already resolves that name; no flag needed.)
 
-> ⚠️ **Version 0.1.0 has no authentication.** Anyone who can reach this service can see the API keys stored in it. Keep it on an internal network, or put it behind a proxy that authenticates — **do not expose it to the public internet.**
+> ⚠️ **Version 0.1.1 has no authentication.** Anyone who can reach this service can see the API keys stored in it. Keep it on an internal network, or put it behind a proxy that authenticates — **do not expose it to the public internet.**
 
 ### macOS (recommended)
 
 **Option 1: portable build**
-Download `RAG-BenchLab-0.1.0-macos-arm64.zip` from [Releases](https://github.com/sgyaqing/RAG-BenchLab/releases) and double-click `start.command` after extracting it. Python and every dependency are included; nothing needs to be installed first.
+Download `RAG-BenchLab-0.1.1-macos-arm64.zip` from [Releases](https://github.com/sgyaqing/RAG-BenchLab/releases) and double-click `start.command` after extracting it. Python and every dependency are included; nothing needs to be installed first.
 
 > **The recommended way to run it is the portable build on macOS**: the NumPy inside it calls Apple's macOS-optimised math libraries directly, which makes the vector work much faster — an optimisation that is unavailable inside Docker or on Windows. **The speed-up for testset generation and evaluation is substantial.**
 
@@ -102,7 +104,7 @@ See the Docker section above.
 ### Windows
 
 **Option 1: portable build**
-Download `RAG-BenchLab-0.1.0-windows-x64.zip` from [Releases](https://github.com/sgyaqing/RAG-BenchLab/releases) and double-click `start.bat` after extracting it. Python and every dependency are included; nothing needs to be installed first.
+Download `RAG-BenchLab-0.1.1-windows-x64.zip` from [Releases](https://github.com/sgyaqing/RAG-BenchLab/releases) and double-click `start.bat` after extracting it. Python and every dependency are included; nothing needs to be installed first.
 
 **Option 2: Docker**
 See the Docker section above.
